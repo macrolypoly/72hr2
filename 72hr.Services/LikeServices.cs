@@ -10,20 +10,42 @@ namespace _72hr.Services
 {
     public class LikeService
     {
-        public LikeDetail CreateLikeByPostId(int postId)
+        private readonly Guid _userId;
+        public LikeService(Guid userId)
+        {
+            _userId = userId;
+        }
+        public bool CreateLikeByPostId(LikeCreate model, int id)
+        {
+            var entity =
+                new Like()
+                {
+                    PostId = model.PostId,
+                    OwnerId = _userId
+                };
+            using(var ctx = new ApplicationDbContext())
+            {
+                var post = ctx.Posts.Single(p => p.Id == id);
+                ctx.Likes.Add(entity);
+                return ctx.SaveChanges() == 1;
+            }
+        }
+        /*public LikeDetail CreateLikeByPostId(int postId)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx
-                     .Likes.
-                     Single(e => e.PostId == postId);
+                     .Posts.
+                     SingleOrDefault(e => e.Id == postId);
+                ctx.Likes.Add(entity);
                 return new LikeDetail
                 {
-                    NoteId = entity.Id,
-                    PostId = entity.PostId,
+                    Id = entity.Id,
+                    PostId = entity.Id
                 };
+                
             }
-        }
+        }*/
 
         public IEnumerable<LikeDetail> GetLikes()
         {
@@ -34,7 +56,7 @@ namespace _72hr.Services
                         e => new LikeDetail
                         {
                             PostId = e.PostId,
-                            NoteId = e.Id
+                            Id = e.Id
                         }
                         );
                 return query.ToArray();
@@ -46,11 +68,11 @@ namespace _72hr.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity = ctx.Likes.Single(e => e.PostId == postId);
+                var entity = ctx.Posts.Single(e => e.Id == postId);
                 return new LikeDetail
                 {
-                    NoteId = entity.Id,
-                    PostId = entity.PostId
+                    Id = entity.Id,
+                    PostId = entity.Id
                 };
             }
         }

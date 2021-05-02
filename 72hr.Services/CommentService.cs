@@ -16,7 +16,7 @@ namespace _72hr.Services
         {
             _userId = userId;
         }
-        public bool CreateComment(CommentCreate model)
+        /*public bool CreateComment(CommentCreate model)
         {
             var entity =
                 new Comment()
@@ -32,13 +32,28 @@ namespace _72hr.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-        public bool CreateCommentonPost(int postId, int commentId)
+        //public bool CreateCommentonPost(int postId, int commentId)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var comment = ctx.Comments.SingleOrDefault(m => m.Id == commentId);
                 var post = ctx.Posts.Single(s => s.Id == postId);
                 post.Comments.Add(comment);
+                return ctx.SaveChanges() == 1;
+            }
+        }*/
+        public bool PostComment(CommentCreate model, int id)
+        {
+            var entity =
+                new Comment()
+                {
+                    AuthorId = _userId,
+                    Text = model.Text
+                };
+            using (var ctx = new ApplicationDbContext())
+            {
+                var post = ctx.Posts.Single(p => p.Id == id);
+                post.Comments.Add(entity);
                 return ctx.SaveChanges() == 1;
             }
         }

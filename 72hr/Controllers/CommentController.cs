@@ -25,14 +25,14 @@ namespace _72hr.Controllers
             var comments = commentService.GetCommentByPostId(id);
             return Ok(comments);
         }
-        public IHttpActionResult Post(CommentCreate comment)
+        public IHttpActionResult Post(CommentCreate comment, int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var service = CreateCommentService();
 
-            if (!service.CreateComment(comment))
+            if (!service.PostComment(comment,id))
                 return InternalServerError();
 
             return Ok();

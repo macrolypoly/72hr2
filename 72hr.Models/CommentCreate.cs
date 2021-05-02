@@ -9,8 +9,6 @@ namespace _72hr.Models
 {
     public class CommentCreate
     {
-        [Required]
-        public int Id { get; set; }
         public string Text { get; set; }
     }
 }

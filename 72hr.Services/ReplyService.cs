@@ -10,7 +10,7 @@ namespace _72hr.Services
 {
     public class ReplyService
     {
-        public bool CreateReply(ReplyCreate model)
+        /*public bool CreateReply(ReplyCreate model)
         {
             var entity =
                 new Reply()
@@ -35,6 +35,22 @@ namespace _72hr.Services
                 var comment = ctx.Comments.Single(co => co.Id == commentId);
                 comment.Replies.Add(reply);
                 return ctx.SaveChanges() == 1;
+            }
+        }*/
+        public bool CreateReply(ReplyCreate model, int id)
+        {
+            var entity =
+                new Reply()
+                {
+                    Text = model.Text,
+                    CommentId = model.CommentId
+                };
+            using (var ctx = new ApplicationDbContext())
+            {
+                var comment = ctx.Comments.Single(p => p.Id == id);
+                ctx.Replies.Add(entity);
+                return ctx.SaveChanges() == 1;
+
             }
         }
 

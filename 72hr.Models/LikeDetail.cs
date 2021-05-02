@@ -8,7 +8,7 @@ namespace _72hr.Models
 {
     public class LikeDetail
     {
-        public int NoteId { get; set; }
+        public int Id { get; set; }
         public int PostId { get; set; }
 
     }
